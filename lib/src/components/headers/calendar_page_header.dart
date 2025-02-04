@@ -110,7 +110,7 @@ class CalendarPageHeader extends StatelessWidget {
             Text(
               dateStringBuilder != null ? dateStringBuilder!(date) : '',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
             ),
