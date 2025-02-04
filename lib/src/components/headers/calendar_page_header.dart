@@ -101,86 +101,51 @@ class CalendarPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: headerStyle.headerMargin,
-      padding: headerStyle.headerPadding,
-      decoration:
-          headerStyle.decoration ?? BoxDecoration(color: backgroundColor),
-      clipBehavior: Clip.antiAlias,
-      child: Row(
-        mainAxisSize: headerStyle.mainAxisSize,
-        mainAxisAlignment: headerStyle.mainAxisAlignment,
-        children: [
-          if (headerStyle.leftIconVisible && headerStyle.leftIconConfig != null)
-            AbsorbPointer(
-              absorbing: !showPreviousIcon,
-              child: Opacity(
-                opacity: showPreviousIcon ? 1 : 0,
-                child: headerStyle.leftIconConfig!.icon?.call(context) ??
-                    IconButton(
-                      onPressed: onPreviousDay,
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      padding: headerStyle.leftIconPadding ??
-                          headerStyle.leftIconConfig!.padding,
-                      icon: headerStyle.leftIcon ??
-                          Icon(
-                            Icons.chevron_left,
-                            size: headerStyle.leftIconConfig!.size,
-                            color:
-                                iconColor ?? headerStyle.leftIconConfig!.color,
-                          ),
-                    ),
+    return Material(
+      color: Colors.white,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Text(
+              dateStringBuilder != null ? dateStringBuilder!(date) : '',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          Expanded(
-            child: titleBuilder != null
-                ? DefaultTextStyle.merge(
-                    style: headerStyle.headerTextStyle,
-                    textAlign: headerStyle.titleAlign,
-                    child: titleBuilder!(context),
-                  )
-                : InkWell(
-                    onTap: onTitleTapped,
-                    child: DefaultTextStyle.merge(
-                      child: Text(
-                        dateStringBuilder?.call(date,
-                                secondaryDate: secondaryDate) ??
-                            '',
-                        textAlign: headerStyle.titleAlign,
-                        style: headerStyle.headerTextStyle,
-                      ),
-                    ),
-                  ),
-          ),
-          if (headerStyle.rightIconVisible &&
-              headerStyle.rightIconConfig != null)
-            AbsorbPointer(
-              absorbing: !showNextIcon,
-              child: Opacity(
-                opacity: showNextIcon ? 1 : 0,
-                child: headerStyle.rightIconConfig!.icon?.call(context) ??
-                    IconButton(
-                      onPressed: onNextDay,
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      padding: headerStyle.rightIconPadding ??
-                          headerStyle.rightIconConfig!.padding,
-                      icon: headerStyle.rightIcon ??
-                          Icon(
-                            Icons.chevron_right,
-                            size: headerStyle.rightIconConfig?.size,
-                            color:
-                                iconColor ?? headerStyle.rightIconConfig?.color,
-                          ),
-                    ),
+            Spacer(),
+            OutlinedButton(
+              onPressed: onPreviousDay,
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                side: BorderSide(color: Color(0xffEAEAEA)),
+                foregroundColor: Colors.grey,
+              ),
+              child: Icon(
+                Icons.keyboard_arrow_left,
+                color: Color(0xffA9A9A9),
               ),
             ),
-        ],
+            SizedBox(width: 8),
+            OutlinedButton(
+              onPressed: onNextDay,
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                side: BorderSide(color: Color(0xffEAEAEA)),
+                foregroundColor: Colors.grey,
+              ),
+              child: Icon(
+                Icons.keyboard_arrow_right,
+                color: Color(0xffA9A9A9),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
