@@ -15,50 +15,53 @@ class DayViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DayView(
-      key: state,
-      width: width,
-      startDuration: Duration(hours: 8),
-      showHalfHours: true,
-      heightPerMinute: 3,
-      timeLineBuilder: _timeLineBuilder,
-      scrollPhysics: const BouncingScrollPhysics(),
-      eventArranger: SideEventArranger(maxWidth: 30),
-      hourIndicatorSettings: HourIndicatorSettings(
-        color: Theme.of(context).dividerColor,
-      ),
-      onTimestampTap: (date) {
-        SnackBar snackBar = SnackBar(
-          content: Text("On tap: ${date.hour} Hr : ${date.minute} Min"),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      },
-      onEventTap: (events, date) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => DetailsPage(
-              event: events.first,
-              date: date,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: DayView(
+        key: state,
+        width: width,
+        startDuration: Duration(hours: 8),
+        showHalfHours: true,
+        heightPerMinute: 3,
+        timeLineBuilder: _timeLineBuilder,
+        scrollPhysics: const BouncingScrollPhysics(),
+        eventArranger: SideEventArranger(maxWidth: 30),
+        hourIndicatorSettings: HourIndicatorSettings(
+          color: Theme.of(context).dividerColor,
+        ),
+        onTimestampTap: (date) {
+          SnackBar snackBar = SnackBar(
+            content: Text("On tap: ${date.hour} Hr : ${date.minute} Min"),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        onEventTap: (events, date) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => DetailsPage(
+                event: events.first,
+                date: date,
+              ),
             ),
-          ),
-        );
-      },
-      onEventLongTap: (events, date) {
-        SnackBar snackBar = SnackBar(content: Text("on LongTap"));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      },
-      halfHourIndicatorSettings: HourIndicatorSettings(
-        color: Theme.of(context).dividerColor,
-        lineStyle: LineStyle.dashed,
-      ),
-      verticalLineOffset: 0,
-      timeLineWidth: 65,
-      showLiveTimeLineInAllDays: true,
-      liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-        color: Colors.redAccent,
-        showBullet: false,
-        showTime: true,
-        showTimeBackgroundView: true,
+          );
+        },
+        onEventLongTap: (events, date) {
+          SnackBar snackBar = SnackBar(content: Text("on LongTap"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        halfHourIndicatorSettings: HourIndicatorSettings(
+          color: Theme.of(context).dividerColor,
+          lineStyle: LineStyle.dashed,
+        ),
+        verticalLineOffset: 0,
+        timeLineWidth: 65,
+        showLiveTimeLineInAllDays: true,
+        liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
+          color: Colors.redAccent,
+          showBullet: false,
+          showTime: true,
+          showTimeBackgroundView: true,
+        ),
       ),
     );
   }

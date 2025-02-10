@@ -226,6 +226,11 @@ class InternalWeekViewPage<T extends Object?> extends StatefulWidget {
 class _InternalWeekViewPageState<T extends Object?>
     extends State<InternalWeekViewPage<T>> {
   late ScrollController scrollController;
+  final ScrollController _horizontalScrollController1 = ScrollController();
+  final ScrollController _horizontalScrollController2 = ScrollController();
+
+  bool _isScrolling1 = false;
+  bool _isScrolling2 = false;
 
   @override
   void initState() {
@@ -234,6 +239,21 @@ class _InternalWeekViewPageState<T extends Object?>
       initialScrollOffset: widget.lastScrollOffset,
     );
     scrollController.addListener(_scrollControllerListener);
+
+    _horizontalScrollController1.addListener(() {
+      if (_isScrolling2) return; // Prevent circular updates
+      _isScrolling1 = true;
+      _horizontalScrollController2.jumpTo(_horizontalScrollController1.offset);
+      _isScrolling1 = false;
+    });
+
+    // Listen for changes in second list
+    _horizontalScrollController2.addListener(() {
+      if (_isScrolling1) return; // Prevent circular updates
+      _isScrolling2 = true;
+      _horizontalScrollController1.jumpTo(_horizontalScrollController2.offset);
+      _isScrolling2 = false;
+    });
   }
 
   @override
@@ -260,28 +280,33 @@ class _InternalWeekViewPageState<T extends Object?>
             : VerticalDirection.down,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(
-            width: widget.width,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: widget.weekTitleHeight,
-                  width: widget.timeLineWidth +
-                      widget.hourIndicatorSettings.offset,
-                  child: widget.weekNumberBuilder.call(filteredDates[0]),
-                ),
-                ...List.generate(
-                  filteredDates.length,
-                  (index) => SizedBox(
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: _horizontalScrollController1,
+            physics: ClampingScrollPhysics(),
+            child: SizedBox(
+              width: widget.width,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
                     height: widget.weekTitleHeight,
-                    width: widget.weekTitleWidth,
-                    child: widget.weekDayBuilder(
-                      filteredDates[index],
-                    ),
+                    width: widget.timeLineWidth +
+                        widget.hourIndicatorSettings.offset,
+                    child: widget.weekNumberBuilder.call(filteredDates[0]),
                   ),
-                )
-              ],
+                  ...List.generate(
+                    filteredDates.length,
+                    (index) => SizedBox(
+                      height: widget.weekTitleHeight,
+                      width: widget.weekTitleWidth,
+                      child: widget.weekDayBuilder(
+                        filteredDates[index],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Divider(
@@ -407,11 +432,14 @@ class _InternalWeekViewPageState<T extends Object?>
                               .quarterHourIndicatorSettings.dashSpaceWidth,
                         ),
                       ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: SizedBox(
+                    SingleChildScrollView(
+                      controller: _horizontalScrollController2,
+                      physics: ClampingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
                         width: widget.weekTitleWidth * filteredDates.length,
                         height: widget.height,
+                        margin: EdgeInsets.only(left: widget.timeLineWidth+ widget.hourIndicatorSettings.offset),
                         child: Row(
                           children: [
                             ...List.generate(
@@ -467,19 +495,22 @@ class _InternalWeekViewPageState<T extends Object?>
                         ),
                       ),
                     ),
-                    TimeLine(
-                      timeLineWidth: widget.timeLineWidth,
-                      hourHeight: widget.hourHeight,
-                      height: widget.height,
-                      timeLineOffset: widget.timeLineOffset,
-                      timeLineBuilder: widget.timeLineBuilder,
-                      startHour: widget.startHour,
-                      showHalfHours: widget.showHalfHours,
-                      showQuarterHours: widget.showQuarterHours,
-                      liveTimeIndicatorSettings:
-                          widget.liveTimeIndicatorSettings,
-                      endHour: widget.endHour,
-                      onTimestampTap: widget.onTimestampTap,
+                    Container(
+                      color: Colors.white,
+                      child: TimeLine(
+                        timeLineWidth: widget.timeLineWidth,
+                        hourHeight: widget.hourHeight,
+                        height: widget.height,
+                        timeLineOffset: widget.timeLineOffset,
+                        timeLineBuilder: widget.timeLineBuilder,
+                        startHour: widget.startHour,
+                        showHalfHours: widget.showHalfHours,
+                        showQuarterHours: widget.showQuarterHours,
+                        liveTimeIndicatorSettings:
+                            widget.liveTimeIndicatorSettings,
+                        endHour: widget.endHour,
+                        onTimestampTap: widget.onTimestampTap,
+                      ),
                     ),
                     if (widget.showLiveLine &&
                         widget.liveTimeIndicatorSettings.height > 0)
