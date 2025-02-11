@@ -313,60 +313,60 @@ class _InternalWeekViewPageState<T extends Object?>
             thickness: 1,
             height: 1,
           ),
-          SizedBox(
-            width: widget.width,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: widget.hourIndicatorSettings.color,
-                    width: 2,
-                  ),
-                ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: widget.timeLineWidth +
-                        widget.hourIndicatorSettings.offset,
-                    child: widget.fullDayHeaderTitle.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 2,
-                              horizontal: 1,
-                            ),
-                            child: Text(
-                              widget.fullDayHeaderTitle,
-                              textAlign:
-                                  widget.fullDayHeaderTextConfig.textAlign,
-                              maxLines: widget.fullDayHeaderTextConfig.maxLines,
-                              overflow:
-                                  widget.fullDayHeaderTextConfig.textOverflow,
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ),
-                  ...List.generate(
-                    filteredDates.length,
-                    (index) {
-                      final fullDayEventList = widget.controller
-                          .getFullDayEvent(filteredDates[index]);
-                      return Container(
-                        width: widget.weekTitleWidth,
-                        child: fullDayEventList.isEmpty
-                            ? null
-                            : widget.fullDayEventBuilder.call(
-                                fullDayEventList,
-                                widget.dates[index],
-                              ),
-                      );
-                    },
-                  )
-                ],
-              ),
-            ),
-          ),
+          // SizedBox(
+          //   width: widget.width,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       border: Border(
+          //         bottom: BorderSide(
+          //           color: widget.hourIndicatorSettings.color,
+          //           width: 2,
+          //         ),
+          //       ),
+          //     ),
+          //     child: Row(
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         SizedBox(
+          //           width: widget.timeLineWidth +
+          //               widget.hourIndicatorSettings.offset,
+          //           child: widget.fullDayHeaderTitle.isNotEmpty
+          //               ? Padding(
+          //                   padding: const EdgeInsets.symmetric(
+          //                     vertical: 2,
+          //                     horizontal: 1,
+          //                   ),
+          //                   child: Text(
+          //                     widget.fullDayHeaderTitle,
+          //                     textAlign:
+          //                         widget.fullDayHeaderTextConfig.textAlign,
+          //                     maxLines: widget.fullDayHeaderTextConfig.maxLines,
+          //                     overflow:
+          //                         widget.fullDayHeaderTextConfig.textOverflow,
+          //                   ),
+          //                 )
+          //               : SizedBox.shrink(),
+          //         ),
+          //         ...List.generate(
+          //           filteredDates.length,
+          //           (index) {
+          //             final fullDayEventList = widget.controller
+          //                 .getFullDayEvent(filteredDates[index]);
+          //             return Container(
+          //               width: widget.weekTitleWidth,
+          //               child: fullDayEventList.isEmpty
+          //                   ? null
+          //                   : widget.fullDayEventBuilder.call(
+          //                       fullDayEventList,
+          //                       widget.dates[index],
+          //                     ),
+          //             );
+          //           },
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: SingleChildScrollView(
               controller: widget.keepScrollOffset
