@@ -504,7 +504,7 @@ class _InternalWeekViewPageState<T extends Object?>
                         border: Border(
                           right: BorderSide(
                             color: widget.hourIndicatorSettings.color,
-                            width: 3,
+                            width: 2,
                           ),
                         ),
                       ),
