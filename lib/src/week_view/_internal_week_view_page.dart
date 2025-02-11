@@ -496,7 +496,18 @@ class _InternalWeekViewPageState<T extends Object?>
                       ),
                     ),
                     Container(
-                      color: Colors.white,
+                      padding: EdgeInsets.only(
+                        left:4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          right: BorderSide(
+                            color: widget.hourIndicatorSettings.color,
+                            width: 3,
+                          ),
+                        ),
+                      ),
                       child: TimeLine(
                         timeLineWidth: widget.timeLineWidth,
                         hourHeight: widget.hourHeight,
